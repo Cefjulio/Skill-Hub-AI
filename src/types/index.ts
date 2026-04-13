@@ -106,8 +106,16 @@ export interface Quiz {
   id: string
   title: string
   description?: string
+  category_id?: string
+  course_id?: string
+  level_id?: string
+  section_id?: string
   created_at: string
   questions?: Question[]
+  category?: Category
+  course?: Course
+  level?: Level
+  section?: Section
 }
 
 export interface Question {

@@ -7,7 +7,9 @@ export const useQuizzes = () =>
     queryKey: ['quizzes'],
     queryFn: async () => {
       const { data, error } = await supabase
-        .from('quizzes').select('*').order('created_at', { ascending: false })
+        .from('quizzes')
+        .select('*, category:categories(id,name), course:courses(id,name), level:levels(id,name), section:sections(id,name)')
+        .order('created_at', { ascending: false })
       if (error) throw error
       return data as Quiz[]
     },
@@ -37,7 +39,7 @@ export const useQuiz = (id: string) =>
 export const useCreateQuiz = () => {
   const qc = useQueryClient()
   return useMutation({
-    mutationFn: async (quiz: { title: string; description?: string }) => {
+    mutationFn: async (quiz: { title: string; description?: string; category_id?: string; course_id?: string; level_id?: string; section_id?: string }) => {
       const { data, error } = await supabase.from('quizzes').insert(quiz).select().single()
       if (error) throw error
       return data as Quiz
