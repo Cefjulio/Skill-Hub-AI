@@ -43,7 +43,7 @@ const ProtectedLayout: React.FC<{ children: React.ReactNode }> = ({ children }) 
   return (
     <div className="app-layout">
       <Sidebar />
-      <div className={`main-content ${sidebarOpen ? '' : 'main-content-full'}`}>
+      <div className={`main-content ${sidebarOpen ? '' : 'is-full'}`}>
         {children}
       </div>
     </div>

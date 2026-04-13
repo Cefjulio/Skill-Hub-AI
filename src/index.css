@@ -78,23 +78,40 @@ body {
   overflow-y: auto;
   z-index: 40;
   transition: transform 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
+  transform: translateX(-100%); /* Hidden by default on mobile */
 }
 
-.sidebar-collapsed {
-  transform: translateX(calc(-1 * var(--sidebar-width)));
+/* Open state for mobile */
+.sidebar.is-open {
+  transform: translateX(0);
 }
 
 .main-content {
   flex: 1;
-  margin-left: var(--sidebar-width);
+  width: 100%;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   transition: margin-left 0.3s ease;
+  margin-left: 0; /* Default for mobile */
 }
 
-.main-content-full {
-  margin-left: 0;
+@media (min-width: 768px) {
+  .sidebar {
+    transform: translateX(0); /* Always visible by default on desktop */
+  }
+  
+  .sidebar.is-collapsed {
+    transform: translateX(-100%); /* Desktop collapse state */
+  }
+
+  .main-content {
+    margin-left: var(--sidebar-width); /* Default for desktop */
+  }
+
+  .main-content.is-full {
+    margin-left: 0; /* Expanded mode on desktop */
+  }
 }
 
 .page-header {

@@ -46,7 +46,7 @@ export const Sidebar: React.FC = () => {
         <div className="fixed inset-0 bg-black/50 z-30 md:hidden" onClick={() => setSidebarOpen(false)} />
       )}
 
-      <aside className={`sidebar ${sidebarOpen ? '' : 'sidebar-collapsed'}`}>
+      <aside className={`sidebar flex flex-col ${sidebarOpen ? 'is-open' : 'is-collapsed'}`}>
         {/* Logo */}
         <div className="sidebar-logo">
           <div className="logo-icon">
