@@ -270,7 +270,7 @@ export const StructurePage: React.FC<StructurePageProps> = ({
                     <tr key={item.id} className={`hover:bg-white/[0.01] transition-colors ${item.is_priority ? 'priority-table-row' : ''}`}>
                       <td className="text-center">
                         <div className="w-6 h-6 rounded bg-indigo-500/10 flex items-center justify-center mx-auto">
-                          {React.cloneElement(icon as React.ReactElement, { size: 12 })}
+                          {React.cloneElement(icon as any, { size: 12 })}
                         </div>
                       </td>
                       {showPriority && (

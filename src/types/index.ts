@@ -46,6 +46,7 @@ export interface Course {
   name: string
   description?: string
   is_priority?: boolean
+  created_at?: string
   category?: Category
 }
 

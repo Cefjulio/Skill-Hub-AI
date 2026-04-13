@@ -48,9 +48,10 @@ const PdfEmbed = Node.create({
     ]
   },
 
+  // @ts-ignore
   addCommands() {
     return {
-      setPdfEmbed: (options: { src: string; title: string }) => ({ commands }) => {
+      setPdfEmbed: (options: { src: string; title: string }) => ({ commands }: any) => {
         return commands.insertContent(`
           <div class="pdf-embed-container" data-type="pdf-embed" contenteditable="false">
             <iframe src="${options.src}" class="pdf-iframe"></iframe>

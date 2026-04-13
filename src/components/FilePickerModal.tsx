@@ -82,7 +82,7 @@ export const FilePickerModal: React.FC<FilePickerModalProps> = ({
       }
       
       const newFiles = await createFile.mutateAsync({ file: payload as any, tagIds: selectedTagIds })
-      const newFile = newFiles[0] // Because it returns the inserted row
+      const newFile = Array.isArray(newFiles) ? newFiles[0] : newFiles
       toast.success('File added to repository!')
       
       // Auto-select the newly created file

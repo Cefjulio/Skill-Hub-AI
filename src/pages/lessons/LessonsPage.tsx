@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Plus, Pencil, Trash2, X, Check, Search, ArrowLeft, CheckCircle2, BookOpen, Brain, Play, ChevronRight, ChevronDown, GraduationCap, LayoutGrid } from 'lucide-react'
+import { Plus, Pencil, Trash2, X, Check, Search, ArrowLeft, CheckCircle2, BookOpen, Brain, Play, ChevronRight, ChevronDown, GraduationCap } from 'lucide-react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { useLessons, useLesson, useCreateLesson, useUpdateLesson, useDeleteLesson, useUserProgress, useMarkLessonComplete, useCategories, useCourses, useLevels, useSections } from '../../hooks/useStructure'
 import { useQuizzes, useCreateQuiz } from '../../hooks/useQuizzes'
@@ -10,7 +10,7 @@ import { RichTextEditor } from '../../components/RichTextEditor'
 import { QuizPlayer } from '../../components/QuizPlayer'
 import { QuizEditorView } from '../quizzes/QuizEditorPage'
 import { useAuthStore } from '../../stores'
-import { Filter, Layers, Book, Gauge, CheckSquare, Tag as TagIcon, RotateCcw } from 'lucide-react'
+import { Layers, Book, Gauge, CheckSquare, RotateCcw } from 'lucide-react'
 import type { Tag } from '../../types'
 import toast from 'react-hot-toast'
 
@@ -36,7 +36,7 @@ export const LessonsPage: React.FC = () => {
   const { data: categories = [] } = useCategories()
   const { data: allCourses = [] } = useCourses()
   const { data: allLevels = [] } = useLevels()
-  const { data: tags = [] } = useTags()
+  useTags() // Keeping query alive without reading unused 'tags' variable if it's not mapped
 
   // Cascading Logic
   const filteredCourseOptions = filterCategory 
