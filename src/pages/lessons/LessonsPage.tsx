@@ -353,9 +353,9 @@ export const LessonEditorPage: React.FC = () => {
   const updateLesson = useUpdateLesson()
 
   const { data: categories = [] } = useCategories()
-  const { data: courses = [] } = useCourses()
-  const { data: levels = [] } = useLevels()
-  const { data: sections = [] } = useSections()
+  const { data: allCourses = [] } = useCourses()
+  const { data: allLevels = [] } = useLevels()
+  const { data: allSections = [] } = useSections()
   const { data: quizzes = [] } = useQuizzes()
 
   const [title, setTitle] = useState('')
@@ -366,6 +366,27 @@ export const LessonEditorPage: React.FC = () => {
   const [sectionId, setSectionId] = useState('')
   const [tagIds, setTagIds] = useState<string[]>([])
   const [quizIds, setQuizIds] = useState<string[]>([])
+
+  // Cascaded filtered options
+  const filteredCourses = categoryId ? allCourses.filter((c: any) => c.category_id === categoryId) : allCourses
+  const filteredLevels = courseId ? allLevels.filter((l: any) => l.course_id === courseId) : allLevels
+  const filteredSections = levelId ? allSections.filter((s: any) => s.level_id === levelId) : allSections
+
+  const handleCategoryChange = (val: string) => {
+    setCategoryId(val)
+    setCourseId('')
+    setLevelId('')
+    setSectionId('')
+  }
+  const handleCourseChange = (val: string) => {
+    setCourseId(val)
+    setLevelId('')
+    setSectionId('')
+  }
+  const handleLevelChange = (val: string) => {
+    setLevelId(val)
+    setSectionId('')
+  }
   const [saving, setSaving] = useState(false)
   const [initialized, setInitialized] = useState(false)
   
@@ -449,20 +470,50 @@ export const LessonEditorPage: React.FC = () => {
             </div>
 
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-              {[
-                { label: 'Category', val: categoryId, set: setCategoryId, opts: categories },
-                { label: 'Course', val: courseId, set: setCourseId, opts: courses },
-                { label: 'Level', val: levelId, set: setLevelId, opts: levels },
-                { label: 'Section', val: sectionId, set: setSectionId, opts: sections },
-              ].map((field) => (
-                <div key={field.label} className="form-group">
-                  <label className="form-label">{field.label}</label>
-                  <select value={field.val} onChange={(e) => field.set(e.target.value)} className="form-input form-select text-sm py-2">
-                    <option value="">— {field.label} —</option>
-                    {field.opts.map((o: any) => <option key={o.id} value={o.id}>{o.name}</option>)}
-                  </select>
-                </div>
-              ))}
+              {/* Category */}
+              <div className="form-group">
+                <label className="form-label">Category</label>
+                <select value={categoryId} onChange={(e) => handleCategoryChange(e.target.value)} className="form-input form-select text-sm py-2">
+                  <option value="">— Category —</option>
+                  {categories.map((o: any) => <option key={o.id} value={o.id}>{o.name}</option>)}
+                </select>
+              </div>
+
+              {/* Course — filtered by category */}
+              <div className="form-group">
+                <label className="form-label">Course</label>
+                <select value={courseId} onChange={(e) => handleCourseChange(e.target.value)} className="form-input form-select text-sm py-2" disabled={filteredCourses.length === 0 && !courseId}>
+                  <option value="">— Course —</option>
+                  {filteredCourses.map((o: any) => <option key={o.id} value={o.id}>{o.name}</option>)}
+                </select>
+                {categoryId && filteredCourses.length === 0 && (
+                  <p className="text-xs text-gray-600 mt-1">No courses for this category</p>
+                )}
+              </div>
+
+              {/* Level — filtered by course */}
+              <div className="form-group">
+                <label className="form-label">Level</label>
+                <select value={levelId} onChange={(e) => handleLevelChange(e.target.value)} className="form-input form-select text-sm py-2" disabled={filteredLevels.length === 0 && !levelId}>
+                  <option value="">— Level —</option>
+                  {filteredLevels.map((o: any) => <option key={o.id} value={o.id}>{o.name}</option>)}
+                </select>
+                {courseId && filteredLevels.length === 0 && (
+                  <p className="text-xs text-gray-600 mt-1">No levels for this course</p>
+                )}
+              </div>
+
+              {/* Section — filtered by level */}
+              <div className="form-group">
+                <label className="form-label">Section</label>
+                <select value={sectionId} onChange={(e) => setSectionId(e.target.value)} className="form-input form-select text-sm py-2" disabled={filteredSections.length === 0 && !sectionId}>
+                  <option value="">— Section —</option>
+                  {filteredSections.map((o: any) => <option key={o.id} value={o.id}>{o.name}</option>)}
+                </select>
+                {levelId && filteredSections.length === 0 && (
+                  <p className="text-xs text-gray-600 mt-1">No sections for this level</p>
+                )}
+              </div>
             </div>
 
             <div className="form-group">
